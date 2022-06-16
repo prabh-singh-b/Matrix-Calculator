@@ -19,8 +19,8 @@ def mainMenu():
 
     t = Label(frame, text = "Matrix Calculator", fg ="white", bg = "black")
     add = Button(frame, width = 10, text = "ADD", command = lambda : data(root,"add"))
-    sub = Button(frame, width = 10, text = "SUB")
-    mul = Button(frame, width = 10, text = "MUL")
+    sub = Button(frame, width = 10, text = "SUB", command = lambda : data(root,"sub"))
+    mul = Button(frame, width = 10, text = "MUL", command = lambda : data(root,"mul"))
     twid = t.winfo_reqwidth()//2
     addwid = add.winfo_reqwidth()//2
     subwid = sub.winfo_reqwidth()//2
@@ -68,6 +68,11 @@ def inp(en,l1,l2,opr,root):
     row = list(map(lambda x: int(x),en.get().split()))
     global cur_mat, cur_row, matwidth, mat1, mat2
     en.delete(0,END)
+    if(len(row) > matwidth):
+        return
+    elif(len(row) < matwidth):
+        for i in range(matwidth - len(row)):
+            row.append(0)
     if(cur_mat == 1): mat1.append(row)
     else: mat2.append(row)
 
@@ -84,6 +89,10 @@ def inp(en,l1,l2,opr,root):
             if( opr == "add"):
                 ADD(root)
                 return
+            elif(opr == "sub"):
+                SUB(root)
+            elif(opr == "mul"):
+                MUL(root)
     else: cur_row += 1
 
     l2.config(text = "Enter Values for row "+str(cur_row))
@@ -102,6 +111,35 @@ def ADD(root):
 
 def Result(root):
     root.destroy()
+    global matwidth,res
+    root = Tk()
+    width = matwidth*30 + 50
+    root.geometry('' + str(width) +"x" + str(width))
+    frame = Frame(root,relief = 'sunken', bg = "black")
+    frame.pack(fill = BOTH, expand = True)
+    for i in range(matwidth):
+        for j in range(matwidth):
+            l = Label(frame, text = str(res[i][j]))
+            l.place(x = (j+1)*30, y = (i)*30)
+
     print(res)
+
+def SUB(root):
+    global res, mat1,mat2,matwidth
+    for i in range(matwidth):
+        row = []
+        for j in range(matwidth):
+            row.append(mat1[i][j] + mat2[i][j])
+        res.append(row)
+    Result(root)
+
+def MUL(root):
+    global res, mat1,mat2,matwidth
+    for i in range(matwidth):
+        row = []
+        for j in range(matwidth):
+            row.append(mat1[i][j] + mat2[i][j])
+        res.append(row)
+    Result(root)
 
 mainMenu()
