@@ -37,6 +37,7 @@ def data(root, opr):
     root.destroy()
     root = Tk()
     root.geometry('500x300')
+    root.title("Matrix Calculator")
 
     frame= Frame(root,relief = 'sunken', bg= "black")
     frame.pack(fill= BOTH, expand= True)
@@ -115,12 +116,13 @@ def Result(root):
     root = Tk()
     width = matwidth*30 + 50
     root.geometry('' + str(width) +"x" + str(width))
+    root.title("Matrix Calculator")
     frame = Frame(root,relief = 'sunken', bg = "black")
     frame.pack(fill = BOTH, expand = True)
     for i in range(matwidth):
         for j in range(matwidth):
             l = Label(frame, text = str(res[i][j]))
-            l.place(x = (j+1)*30, y = (i)*30)
+            l.place(x = (j+1)*30, y = (i+1)*30)
 
     print(res)
 
@@ -129,7 +131,7 @@ def SUB(root):
     for i in range(matwidth):
         row = []
         for j in range(matwidth):
-            row.append(mat1[i][j] + mat2[i][j])
+            row.append(mat1[i][j] - mat2[i][j])
         res.append(row)
     Result(root)
 
@@ -138,7 +140,7 @@ def MUL(root):
     for i in range(matwidth):
         row = []
         for j in range(matwidth):
-            row.append(mat1[i][j] + mat2[i][j])
+            row.append(mat1[i][j] * mat2[i][j])
         res.append(row)
     Result(root)
 
