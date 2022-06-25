@@ -1,36 +1,5 @@
-from cgitb import reset
 from tkinter import *
-from tkinter import ttk
-
-mat1 = []
-mat2 = []
-matwidth = 4
-cur_row = 1
-cur_mat = 1
-res = []
-
-def mainMenu():
-    root = Tk()
-    root.geometry('500x300')
-    root.title("Matrix Calculator")
-    
-    frame= Frame(root,relief = 'sunken', bg= "black")
-    frame.pack(fill= BOTH, expand= True)
-
-    t = Label(frame, text = "Matrix Calculator", fg ="white", bg = "black")
-    add = Button(frame, width = 10, text = "ADD", command = lambda : data(root,"add"))
-    sub = Button(frame, width = 10, text = "SUB", command = lambda : data(root,"sub"))
-    mul = Button(frame, width = 10, text = "MUL", command = lambda : data(root,"mul"))
-    twid = t.winfo_reqwidth()//2
-    addwid = add.winfo_reqwidth()//2
-    subwid = sub.winfo_reqwidth()//2
-    mulwid = mul.winfo_reqwidth()//2
-
-    t.place(x = 250 - twid, y = 30)
-    add.place(x = 125 - addwid, y = 60 )
-    sub.place(x = 250 - subwid, y = 60)
-    mul.place(x = 375 - mulwid, y = 60)
-    mainloop()
+from glbl import *
 
 def data(root, opr): 
     #opr is operation
@@ -63,7 +32,6 @@ def data(root, opr):
 
 
     mainloop()
-
     
 def inp(en,l1,l2,opr,root):
     row = list(map(lambda x: int(x),en.get().split()))
@@ -98,9 +66,9 @@ def inp(en,l1,l2,opr,root):
 
     l2.config(text = "Enter Values for row "+str(cur_row))
 
-
 def ADD(root):
-    global res, mat1,mat2,matwidth
+    global res, mat1,mat2,matwidth, operation
+    operation = "+"
 
     for i in range(matwidth):
         row = []
@@ -110,24 +78,10 @@ def ADD(root):
 
     Result(root)
 
-def Result(root):
-    root.destroy()
-    global matwidth,res
-    root = Tk()
-    width = matwidth*30 + 50
-    root.geometry('' + str(width) +"x" + str(width))
-    root.title("Matrix Calculator")
-    frame = Frame(root,relief = 'sunken', bg = "black")
-    frame.pack(fill = BOTH, expand = True)
-    for i in range(matwidth):
-        for j in range(matwidth):
-            l = Label(frame, text = str(res[i][j]))
-            l.place(x = (j+1)*30, y = (i+1)*30)
-
-    print(res)
-
 def SUB(root):
-    global res, mat1,mat2,matwidth
+    global res, mat1,mat2,matwidth, operation
+    operation = "-"
+
     for i in range(matwidth):
         row = []
         for j in range(matwidth):
@@ -136,7 +90,9 @@ def SUB(root):
     Result(root)
 
 def MUL(root):
-    global res, mat1,mat2,matwidth
+    global res, mat1,mat2,matwidth, operation
+    operation = "x"
+
     for i in range(matwidth):
         row = []
         for j in range(matwidth):
@@ -144,4 +100,32 @@ def MUL(root):
         res.append(row)
     Result(root)
 
-mainMenu()
+def Result(root):
+    root.destroy()
+    global matwidth,res
+    root = Tk()
+    width = matwidth*30 + 50
+    root.geometry('' + str(width*3) +"x" + str(width))
+    root.title("Matrix Calculator")
+    frame = Frame(root,relief = 'sunken', bg = "black")
+    frame.pack(fill = BOTH, expand = True)
+    for i in range(matwidth):
+        for j in range(matwidth):
+            l = Label(frame, text = str(mat1[i][j]))
+            l.place(x = (j+1)*30, y = (i+1)*30)
+    l = Label(frame, text = operation)
+    l.place(x = width, y = width //2)
+    for i in range(matwidth):
+        for j in range(matwidth):
+            l = Label(frame, text = str(mat2[i][j]))
+            l.place(x = width + (j+1)*30, y = (i+1)*30)
+
+    l = Label(frame, text = "=")
+    l.place(x = 2*width - 25, y = width //2)
+
+    for i in range(matwidth):
+        for j in range(matwidth):
+            l = Label(frame, text = str(res[i][j]))
+            l.place(x = width + width + (j+1)*30, y = (i+1)*30)
+
+    print(res)
